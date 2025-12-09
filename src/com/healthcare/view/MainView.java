@@ -78,6 +78,7 @@ public class MainView extends JFrame {
         setJMenuBar(menuBar);
     }
 
+    //load data for csv files
     private void loadData() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

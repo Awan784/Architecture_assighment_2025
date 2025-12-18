@@ -88,3 +88,4 @@ The application expects the following CSV files in the `data/` directory:
 ✅ Class relationships (association, composition, inheritance)
 
 
+

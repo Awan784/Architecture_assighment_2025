@@ -21,6 +21,8 @@ public class MainView extends JFrame {
     public MainView(HealthcareController controller) {
         this.controller = controller;
         initializeGUI();
+        // After UI and data are ready, populate all tables once on startup
+        refreshAllPanels();
     }
 
     private void initializeGUI() {

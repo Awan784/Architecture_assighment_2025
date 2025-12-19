@@ -13,7 +13,8 @@ public class ReferralPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JTextField referralIDField, patientIDField, referringClinicianIDField, receivingClinicianIDField;
     private JTextField referringFacilityField, receivingFacilityField, dateField;
-    private JTextField urgencyField, clinicalSummaryField, statusField;
+    private JTextField urgencyField, referralReasonField, clinicalSummaryField, investigationsField;
+    private JTextField appointmentIDField, notesField, statusField, createdDateField, lastUpdatedField;
 
     public ReferralPanel(HealthcareController controller) {
         this.controller = controller;
@@ -24,7 +25,8 @@ public class ReferralPanel extends JPanel {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         String[] columns = {"Referral ID", "Patient ID", "Referring Clinician", "Receiving Clinician",
-                          "Referring Facility", "Receiving Facility", "Date", "Urgency", "Status", "Clinical Summary"};
+                          "Referring Facility", "Receiving Facility", "Date", "Urgency", "Referral Reason",
+                          "Clinical Summary", "Investigations", "Appointment ID", "Notes", "Status", "Created", "Last Updated"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -69,8 +71,14 @@ public class ReferralPanel extends JPanel {
         addField(panel, gbc, row++, "Receiving Facility:", receivingFacilityField = new JTextField(15));
         addField(panel, gbc, row++, "Date:", dateField = new JTextField(15));
         addField(panel, gbc, row++, "Urgency:", urgencyField = new JTextField(15));
-        addField(panel, gbc, row++, "Status:", statusField = new JTextField(15));
+        addField(panel, gbc, row++, "Referral Reason:", referralReasonField = new JTextField(30));
         addField(panel, gbc, row++, "Clinical Summary:", clinicalSummaryField = new JTextField(30));
+        addField(panel, gbc, row++, "Investigations:", investigationsField = new JTextField(30));
+        addField(panel, gbc, row++, "Appointment ID:", appointmentIDField = new JTextField(15));
+        addField(panel, gbc, row++, "Notes:", notesField = new JTextField(30));
+        addField(panel, gbc, row++, "Status:", statusField = new JTextField(15));
+        addField(panel, gbc, row++, "Created Date:", createdDateField = new JTextField(15));
+        addField(panel, gbc, row++, "Last Updated:", lastUpdatedField = new JTextField(15));
 
         return panel;
     }
@@ -180,8 +188,10 @@ public class ReferralPanel extends JPanel {
         return new Referral(referralIDField.getText().trim(), patientIDField.getText().trim(),
             referringClinicianIDField.getText().trim(), receivingClinicianIDField.getText().trim(),
             referringFacilityField.getText().trim(), receivingFacilityField.getText().trim(),
-            dateField.getText().trim(), urgencyField.getText().trim(),
-            clinicalSummaryField.getText().trim(), statusField.getText().trim());
+            dateField.getText().trim(), urgencyField.getText().trim(), referralReasonField.getText().trim(),
+            clinicalSummaryField.getText().trim(), investigationsField.getText().trim(),
+            appointmentIDField.getText().trim(), notesField.getText().trim(), statusField.getText().trim(),
+            createdDateField.getText().trim(), lastUpdatedField.getText().trim());
     }
 
     private void loadSelectedReferral() {
@@ -195,8 +205,14 @@ public class ReferralPanel extends JPanel {
             receivingFacilityField.setText((String) tableModel.getValueAt(row, 5));
             dateField.setText((String) tableModel.getValueAt(row, 6));
             urgencyField.setText((String) tableModel.getValueAt(row, 7));
-            statusField.setText((String) tableModel.getValueAt(row, 8));
+            referralReasonField.setText((String) tableModel.getValueAt(row, 8));
             clinicalSummaryField.setText((String) tableModel.getValueAt(row, 9));
+            investigationsField.setText((String) tableModel.getValueAt(row, 10));
+            appointmentIDField.setText((String) tableModel.getValueAt(row, 11));
+            notesField.setText((String) tableModel.getValueAt(row, 12));
+            statusField.setText((String) tableModel.getValueAt(row, 13));
+            createdDateField.setText((String) tableModel.getValueAt(row, 14));
+            lastUpdatedField.setText((String) tableModel.getValueAt(row, 15));
         }
     }
 
@@ -209,8 +225,14 @@ public class ReferralPanel extends JPanel {
         receivingFacilityField.setText("");
         dateField.setText("");
         urgencyField.setText("");
+        referralReasonField.setText("");
         clinicalSummaryField.setText("");
+        investigationsField.setText("");
+        appointmentIDField.setText("");
+        notesField.setText("");
         statusField.setText("");
+        createdDateField.setText("");
+        lastUpdatedField.setText("");
     }
 
     public void refreshData() {
@@ -218,7 +240,9 @@ public class ReferralPanel extends JPanel {
         for (Referral r : controller.getAllReferrals()) {
             tableModel.addRow(new Object[]{r.getReferralID(), r.getPatientID(), r.getReferringClinicianID(),
                 r.getReceivingClinicianID(), r.getReferringFacility(), r.getReceivingFacility(),
-                r.getDate(), r.getUrgency(), r.getStatus(), r.getClinicalSummary()});
+                r.getDate(), r.getUrgency(), r.getReferralReason(), r.getClinicalSummary(),
+                r.getRequestedInvestigations(), r.getAppointmentID(), r.getNotes(), r.getStatus(),
+                r.getCreatedDate(), r.getLastUpdated()});
         }
     }
 }

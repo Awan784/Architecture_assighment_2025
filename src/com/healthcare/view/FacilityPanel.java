@@ -11,8 +11,8 @@ public class FacilityPanel extends JPanel {
     private HealthcareController controller;
     private JTable table;
     private DefaultTableModel tableModel;
-    private JTextField facilityIDField, nameField, typeField, addressField;
-    private JTextField phoneField, emailField, servicesField, capacityField;
+    private JTextField facilityIDField, nameField, typeField, addressField, postcodeField;
+    private JTextField phoneField, emailField, openingHoursField, managerField, servicesField, capacityField;
 
     public FacilityPanel(HealthcareController controller) {
         this.controller = controller;
@@ -22,7 +22,7 @@ public class FacilityPanel extends JPanel {
     private void initializePanel() {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        String[] columns = {"Facility ID", "Name", "Type", "Address", "Phone", "Email", "Services", "Capacity"};
+        String[] columns = {"Facility ID", "Name", "Type", "Address", "Postcode", "Phone", "Email", "Opening Hours", "Manager", "Services", "Capacity"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -63,8 +63,11 @@ public class FacilityPanel extends JPanel {
         addField(panel, gbc, row++, "Name:", nameField = new JTextField(15));
         addField(panel, gbc, row++, "Type:", typeField = new JTextField(15));
         addField(panel, gbc, row++, "Address:", addressField = new JTextField(15));
+        addField(panel, gbc, row++, "Postcode:", postcodeField = new JTextField(15));
         addField(panel, gbc, row++, "Phone:", phoneField = new JTextField(15));
         addField(panel, gbc, row++, "Email:", emailField = new JTextField(15));
+        addField(panel, gbc, row++, "Opening Hours:", openingHoursField = new JTextField(15));
+        addField(panel, gbc, row++, "Manager:", managerField = new JTextField(15));
         addField(panel, gbc, row++, "Services:", servicesField = new JTextField(15));
         addField(panel, gbc, row++, "Capacity:", capacityField = new JTextField(15));
 
@@ -147,8 +150,9 @@ public class FacilityPanel extends JPanel {
             return null;
         }
         return new Facility(facilityIDField.getText().trim(), nameField.getText().trim(),
-            typeField.getText().trim(), addressField.getText().trim(), phoneField.getText().trim(),
-            emailField.getText().trim(), servicesField.getText().trim(), capacityField.getText().trim());
+            typeField.getText().trim(), addressField.getText().trim(), postcodeField.getText().trim(),
+            phoneField.getText().trim(), emailField.getText().trim(), openingHoursField.getText().trim(),
+            managerField.getText().trim(), servicesField.getText().trim(), capacityField.getText().trim());
     }
 
     private void loadSelectedFacility() {
@@ -158,10 +162,13 @@ public class FacilityPanel extends JPanel {
             nameField.setText((String) tableModel.getValueAt(row, 1));
             typeField.setText((String) tableModel.getValueAt(row, 2));
             addressField.setText((String) tableModel.getValueAt(row, 3));
-            phoneField.setText((String) tableModel.getValueAt(row, 4));
-            emailField.setText((String) tableModel.getValueAt(row, 5));
-            servicesField.setText((String) tableModel.getValueAt(row, 6));
-            capacityField.setText((String) tableModel.getValueAt(row, 7));
+            postcodeField.setText((String) tableModel.getValueAt(row, 4));
+            phoneField.setText((String) tableModel.getValueAt(row, 5));
+            emailField.setText((String) tableModel.getValueAt(row, 6));
+            openingHoursField.setText((String) tableModel.getValueAt(row, 7));
+            managerField.setText((String) tableModel.getValueAt(row, 8));
+            servicesField.setText((String) tableModel.getValueAt(row, 9));
+            capacityField.setText((String) tableModel.getValueAt(row, 10));
         }
     }
 
@@ -170,8 +177,11 @@ public class FacilityPanel extends JPanel {
         nameField.setText("");
         typeField.setText("");
         addressField.setText("");
+        postcodeField.setText("");
         phoneField.setText("");
         emailField.setText("");
+        openingHoursField.setText("");
+        managerField.setText("");
         servicesField.setText("");
         capacityField.setText("");
     }
@@ -180,7 +190,8 @@ public class FacilityPanel extends JPanel {
         tableModel.setRowCount(0);
         for (Facility f : controller.getAllFacilities()) {
             tableModel.addRow(new Object[]{f.getFacilityID(), f.getName(), f.getType(), f.getAddress(),
-                f.getPhone(), f.getEmail(), f.getServices(), f.getCapacity()});
+                f.getPostcode(), f.getPhone(), f.getEmail(), f.getOpeningHours(), f.getManagerName(),
+                f.getServices(), f.getCapacity()});
         }
     }
 }

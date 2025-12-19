@@ -4,6 +4,7 @@ import com.healthcare.controller.HealthcareController;
 import com.healthcare.model.Patient;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.List;
 
@@ -15,7 +16,8 @@ public class PatientPanel extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
     private JTextField patientIDField, firstNameField, lastNameField, dobField, genderField;
-    private JTextField nhsNumberField, emailField, phoneField, addressField, gpSurgeryField;
+    private JTextField nhsNumberField, emailField, phoneField, addressField, postcodeField;
+    private JTextField emergencyContactNameField, emergencyContactPhoneField, registrationDateField, gpSurgeryField;
 
     public PatientPanel(HealthcareController controller) {
         this.controller = controller;
@@ -26,9 +28,13 @@ public class PatientPanel extends JPanel {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        // Soft background for a cleaner "admin panel" appearance
+        setBackground(new Color(245, 247, 250));
+
         // Table
         String[] columns = {"Patient ID", "First Name", "Last Name", "DOB", "Gender", 
-                          "NHS Number", "Email", "Phone", "Address", "GP Surgery"};
+                          "NHS Number", "Email", "Phone", "Address", "Postcode", 
+                          "Emergency Contact", "Emergency Phone", "Registration Date", "GP Surgery"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -49,23 +55,35 @@ public class PatientPanel extends JPanel {
             }
         });
 
+        // Style table header for a dashboard-like look
+        JTableHeader header = table.getTableHeader();
+        header.setReorderingAllowed(false);
+        header.setBackground(new Color(236, 239, 241));
+        header.setForeground(new Color(55, 71, 79));
+        header.setFont(header.getFont().deriveFont(Font.BOLD, 13f));
+
         JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.getViewport().setBackground(Color.WHITE);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Patients"));
         add(scrollPane, BorderLayout.CENTER);
 
         // Form panel
         JPanel formPanel = createFormPanel();
         formPanel.setBorder(BorderFactory.createTitledBorder("Patient Details"));
+        formPanel.setBackground(new Color(250, 250, 250));
         add(formPanel, BorderLayout.SOUTH);
 
         // Buttons panel
         JPanel buttonPanel = createButtonPanel();
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+        buttonPanel.setBackground(new Color(245, 247, 250));
         add(buttonPanel, BorderLayout.NORTH);
     }
 
     private JPanel createFormPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
+        panel.setOpaque(true);
+        panel.setBackground(new Color(250, 250, 250));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
@@ -131,8 +149,34 @@ public class PatientPanel extends JPanel {
         row++;
         gbc.gridx = 0;
         gbc.gridy = row;
-        panel.add(new JLabel("GP Surgery:"), gbc);
+        panel.add(new JLabel("Postcode:"), gbc);
         gbc.gridx = 1;
+        postcodeField = new JTextField(15);
+        panel.add(postcodeField, gbc);
+
+        gbc.gridx = 2;
+        panel.add(new JLabel("Emergency Contact:"), gbc);
+        gbc.gridx = 3;
+        emergencyContactNameField = new JTextField(15);
+        panel.add(emergencyContactNameField, gbc);
+
+        gbc.gridx = 4;
+        panel.add(new JLabel("Emergency Phone:"), gbc);
+        gbc.gridx = 5;
+        emergencyContactPhoneField = new JTextField(15);
+        panel.add(emergencyContactPhoneField, gbc);
+
+        row++;
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        panel.add(new JLabel("Registration Date:"), gbc);
+        gbc.gridx = 1;
+        registrationDateField = new JTextField(15);
+        panel.add(registrationDateField, gbc);
+
+        gbc.gridx = 2;
+        panel.add(new JLabel("GP Surgery:"), gbc);
+        gbc.gridx = 3;
         gpSurgeryField = new JTextField(15);
         panel.add(gpSurgeryField, gbc);
 
@@ -140,29 +184,59 @@ public class PatientPanel extends JPanel {
     }
 
     private JPanel createButtonPanel() {
-        JPanel panel = new JPanel(new FlowLayout());
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
 
-        JButton addButton = new JButton("Add");
+        JButton addButton = createPrimaryButton("Add");
         addButton.addActionListener(e -> addPatient());
         panel.add(addButton);
 
-        JButton updateButton = new JButton("Update");
+        JButton updateButton = createPrimaryButton("Update");
         updateButton.addActionListener(e -> updatePatient());
         panel.add(updateButton);
 
-        JButton deleteButton = new JButton("Delete");
+        JButton deleteButton = createDangerButton("Delete");
         deleteButton.addActionListener(e -> deletePatient());
         panel.add(deleteButton);
 
-        JButton clearButton = new JButton("Clear");
+        JButton clearButton = createSecondaryButton("Clear");
         clearButton.addActionListener(e -> clearForm());
         panel.add(clearButton);
 
-        JButton refreshButton = new JButton("Refresh");
+        JButton refreshButton = createSecondaryButton("Refresh");
         refreshButton.addActionListener(e -> refreshData());
         panel.add(refreshButton);
 
         return panel;
+    }
+
+    /**
+     * Button styling helpers to give an "admin dashboard" look
+     */
+    private JButton createPrimaryButton(String text) {
+        JButton button = new JButton(text);
+        styleButton(button, new Color(33, 150, 243), Color.WHITE);
+        return button;
+    }
+
+    private JButton createSecondaryButton(String text) {
+        JButton button = new JButton(text);
+        styleButton(button, new Color(236, 239, 241), new Color(55, 71, 79));
+        return button;
+    }
+
+    private JButton createDangerButton(String text) {
+        JButton button = new JButton(text);
+        styleButton(button, new Color(229, 57, 53), Color.WHITE);
+        return button;
+    }
+
+    private void styleButton(JButton button, Color background, Color foreground) {
+        button.setBackground(background);
+        button.setForeground(foreground);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(6, 14, 6, 14));
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setFont(button.getFont().deriveFont(Font.BOLD, 12f));
     }
 
     private void addPatient() {
@@ -239,6 +313,10 @@ public class PatientPanel extends JPanel {
             emailField.getText().trim(),
             phoneField.getText().trim(),
             addressField.getText().trim(),
+            postcodeField.getText().trim(),
+            emergencyContactNameField.getText().trim(),
+            emergencyContactPhoneField.getText().trim(),
+            registrationDateField.getText().trim(),
             gpSurgeryField.getText().trim()
         );
     }
@@ -255,7 +333,11 @@ public class PatientPanel extends JPanel {
             emailField.setText((String) tableModel.getValueAt(selectedRow, 6));
             phoneField.setText((String) tableModel.getValueAt(selectedRow, 7));
             addressField.setText((String) tableModel.getValueAt(selectedRow, 8));
-            gpSurgeryField.setText((String) tableModel.getValueAt(selectedRow, 9));
+            postcodeField.setText((String) tableModel.getValueAt(selectedRow, 9));
+            emergencyContactNameField.setText((String) tableModel.getValueAt(selectedRow, 10));
+            emergencyContactPhoneField.setText((String) tableModel.getValueAt(selectedRow, 11));
+            registrationDateField.setText((String) tableModel.getValueAt(selectedRow, 12));
+            gpSurgeryField.setText((String) tableModel.getValueAt(selectedRow, 13));
         }
     }
 
@@ -269,6 +351,10 @@ public class PatientPanel extends JPanel {
         emailField.setText("");
         phoneField.setText("");
         addressField.setText("");
+        postcodeField.setText("");
+        emergencyContactNameField.setText("");
+        emergencyContactPhoneField.setText("");
+        registrationDateField.setText("");
         gpSurgeryField.setText("");
     }
 
@@ -286,6 +372,10 @@ public class PatientPanel extends JPanel {
                 patient.getEmail(),
                 patient.getPhone(),
                 patient.getAddress(),
+                patient.getPostcode(),
+                patient.getEmergencyContactName(),
+                patient.getEmergencyContactPhone(),
+                patient.getRegistrationDate(),
                 patient.getGpSurgery()
             });
         }

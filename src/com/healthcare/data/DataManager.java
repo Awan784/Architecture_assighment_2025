@@ -72,19 +72,23 @@ public class DataManager {
             while ((line = br.readLine()) != null && !line.trim().isEmpty()) {
                 String[] fields = parseCSVLine(line);
                 // Expected CSV (patients.csv):
-                // patient_id,first_name,last_name,date_of_birth,nhs_number,gender,phone_number,email,address,postcode,...
-                if (fields.length >= 10) {
+                // patient_id,first_name,last_name,date_of_birth,nhs_number,gender,phone_number,email,address,postcode,emergency_contact_name,emergency_contact_phone,registration_date,gp_surgery_id
+                if (fields.length >= 14) {
                     Patient patient = new Patient(
-                            fields[0], // patient_id
-                            fields[1], // first_name
-                            fields[2], // last_name
-                            fields[3], // date_of_birth
-                            fields[5], // gender
-                            fields[4], // nhs_number
-                            fields[7], // email
-                            fields[6], // phone_number
-                            fields[8], // address
-                            fields[9]  // use postcode as gpSurgery identifier
+                            fields[0],  // patient_id
+                            fields[1],  // first_name
+                            fields[2],  // last_name
+                            fields[3],  // date_of_birth
+                            fields[5],  // gender
+                            fields[4],  // nhs_number
+                            fields[7],  // email
+                            fields[6],  // phone_number
+                            fields[8],  // address
+                            fields[9],  // postcode
+                            fields[10], // emergency_contact_name
+                            fields[11], // emergency_contact_phone
+                            fields[12], // registration_date
+                            fields[13]  // gp_surgery_id
                     );
                     patients.add(patient);
                 }
@@ -100,17 +104,21 @@ public class DataManager {
             while ((line = br.readLine()) != null && !line.trim().isEmpty()) {
                 String[] fields = parseCSVLine(line);
                 // Expected CSV (clinicians.csv):
-                // clinician_id,first_name,last_name,title,speciality,gmc_number,phone_number,email,workplace_id,...
-                if (fields.length >= 9) {
+                // clinician_id,first_name,last_name,title,speciality,gmc_number,phone_number,email,workplace_id,workplace_type,employment_status,start_date
+                if (fields.length >= 12) {
                     Clinician clinician = new Clinician(
-                            fields[0], // clinician_id
-                            fields[1], // first_name
-                            fields[2], // last_name
-                            fields[3], // title -> qualification
-                            fields[4], // speciality -> specialty
-                            fields[8], // workplace_id -> workplace
-                            fields[7], // email
-                            fields[6]  // phone_number
+                            fields[0],  // clinician_id
+                            fields[1],  // first_name
+                            fields[2],  // last_name
+                            fields[3],  // title -> qualification
+                            fields[4],  // speciality -> specialty
+                            fields[5],  // gmc_number
+                            fields[8],  // workplace_id -> workplace
+                            fields[9],  // workplace_type
+                            fields[10], // employment_status
+                            fields[11], // start_date
+                            fields[7],  // email
+                            fields[6]   // phone_number
                     );
                     clinicians.add(clinician);
                 }
@@ -129,12 +137,15 @@ public class DataManager {
                 // facility_id,facility_name,facility_type,address,postcode,phone_number,email,opening_hours,manager_name,capacity,specialities_offered
                 if (fields.length >= 11) {
                     Facility facility = new Facility(
-                            fields[0], // facility_id
-                            fields[1], // facility_name
-                            fields[2], // facility_type
-                            fields[3], // address
-                            fields[5], // phone_number
-                            fields[6], // email
+                            fields[0],  // facility_id
+                            fields[1],  // facility_name
+                            fields[2],  // facility_type
+                            fields[3],  // address
+                            fields[4],  // postcode
+                            fields[5],  // phone_number
+                            fields[6],  // email
+                            fields[7],  // opening_hours
+                            fields[8],  // manager_name
                             fields[10], // specialities_offered -> services
                             fields[9]   // capacity
                     );
@@ -153,18 +164,22 @@ public class DataManager {
                 String[] fields = parseCSVLine(line);
                 // Expected CSV (appointments.csv):
                 // appointment_id,patient_id,clinician_id,facility_id,appointment_date,appointment_time,
-                // duration_minutes,appointment_type,status,reason_for_visit,notes,...
-                if (fields.length >= 11) {
+                // duration_minutes,appointment_type,status,reason_for_visit,notes,created_date,last_modified
+                if (fields.length >= 13) {
                     Appointment appointment = new Appointment(
-                            fields[0], // appointment_id
-                            fields[1], // patient_id
-                            fields[2], // clinician_id
-                            fields[3], // facility_id
-                            fields[4], // appointment_date
-                            fields[5], // appointment_time
-                            fields[8], // status
-                            fields[9], // reason_for_visit
-                            fields[10] // notes
+                            fields[0],  // appointment_id
+                            fields[1],  // patient_id
+                            fields[2],  // clinician_id
+                            fields[3],  // facility_id
+                            fields[4],  // appointment_date
+                            fields[5],  // appointment_time
+                            fields[6],  // duration_minutes
+                            fields[7],  // appointment_type
+                            fields[8],  // status
+                            fields[9],  // reason_for_visit
+                            fields[10], // notes
+                            fields[11], // created_date
+                            fields[12]  // last_modified
                     );
                     appointments.add(appointment);
                 }
@@ -184,16 +199,21 @@ public class DataManager {
                 // dosage,frequency,duration_days,quantity,instructions,pharmacy_name,status,issue_date,collection_date
                 if (fields.length >= 15) {
                     Prescription prescription = new Prescription(
-                            fields[0],  // prescription_id
-                            fields[1],  // patient_id
-                            fields[2],  // clinician_id
-                            fields[5],  // medication_name
-                            fields[6],  // dosage
-                            fields[9],  // quantity
-                            fields[11], // pharmacy_name
-                            fields[4],  // prescription_date -> datePrescribed
-                            fields[12], // status -> collectionStatus
-                            fields[10]  // instructions -> notes
+                            fields[0],   // prescription_id
+                            fields[1],   // patient_id
+                            fields[2],   // clinician_id
+                            fields[3],   // appointment_id
+                            fields[5],   // medication_name
+                            fields[6],   // dosage
+                            fields[7],   // frequency
+                            fields[8],   // duration_days
+                            fields[9],   // quantity
+                            fields[11],  // pharmacy_name
+                            fields[4],   // prescription_date
+                            fields[13],  // issue_date
+                            fields[14],  // collection_date
+                            fields[12],  // status -> collectionStatus
+                            fields[10]   // instructions -> notes
                     );
                     prescriptions.add(prescription);
                 }
@@ -211,19 +231,25 @@ public class DataManager {
                 // Expected CSV (referrals.csv):
                 // referral_id,patient_id,referring_clinician_id,referred_to_clinician_id,
                 // referring_facility_id,referred_to_facility_id,referral_date,urgency_level,
-                // referral_reason,clinical_summary,requested_investigations,status,...
-                if (fields.length >= 12) {
+                // referral_reason,clinical_summary,requested_investigations,status,appointment_id,notes,created_date,last_updated
+                if (fields.length >= 16) {
                     Referral referral = new Referral(
-                            fields[0],  // referral_id
-                            fields[1],  // patient_id
-                            fields[2],  // referring_clinician_id
-                            fields[3],  // referred_to_clinician_id
-                            fields[4],  // referring_facility_id
-                            fields[5],  // referred_to_facility_id
-                            fields[6],  // referral_date
-                            fields[7],  // urgency_level
-                            fields[9],  // clinical_summary
-                            fields[11]  // status
+                            fields[0],   // referral_id
+                            fields[1],   // patient_id
+                            fields[2],   // referring_clinician_id
+                            fields[3],   // referred_to_clinician_id
+                            fields[4],   // referring_facility_id
+                            fields[5],   // referred_to_facility_id
+                            fields[6],   // referral_date
+                            fields[7],   // urgency_level
+                            fields[8],   // referral_reason
+                            fields[9],   // clinical_summary
+                            fields[10],  // requested_investigations
+                            fields[12],  // appointment_id
+                            fields[13],  // notes
+                            fields[11],  // status
+                            fields[14],  // created_date
+                            fields[15]   // last_updated
                     );
                     referrals.add(referral);
                 }
@@ -239,16 +265,21 @@ public class DataManager {
             while ((line = br.readLine()) != null && !line.trim().isEmpty()) {
                 String[] fields = parseCSVLine(line);
                 // Expected CSV (staff.csv):
-                // staff_id,first_name,last_name,role,department,facility_id,phone_number,email,...
-                if (fields.length >= 8) {
+                // staff_id,first_name,last_name,role,department,facility_id,phone_number,email,employment_status,start_date,line_manager,access_level
+                if (fields.length >= 12) {
                     Staff staffMember = new Staff(
-                            fields[0], // staff_id
-                            fields[1], // first_name
-                            fields[2], // last_name
-                            fields[3], // role
-                            fields[5], // facility_id
-                            fields[7], // email
-                            fields[6]  // phone_number
+                            fields[0],  // staff_id
+                            fields[1],  // first_name
+                            fields[2],  // last_name
+                            fields[3],  // role
+                            fields[4],  // department
+                            fields[5],  // facility_id
+                            fields[7],  // email
+                            fields[6],  // phone_number
+                            fields[8],  // employment_status
+                            fields[9],  // start_date
+                            fields[10], // line_manager
+                            fields[11]  // access_level
                     );
                     staff.add(staffMember);
                 }

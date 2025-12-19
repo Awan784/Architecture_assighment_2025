@@ -11,8 +11,9 @@ public class StaffPanel extends JPanel {
     private HealthcareController controller;
     private JTable table;
     private DefaultTableModel tableModel;
-    private JTextField staffIDField, firstNameField, lastNameField, roleField;
-    private JTextField facilityIDField, emailField, phoneField;
+    private JTextField staffIDField, firstNameField, lastNameField, roleField, departmentField;
+    private JTextField facilityIDField, emailField, phoneField, employmentStatusField;
+    private JTextField startDateField, lineManagerField, accessLevelField;
 
     public StaffPanel(HealthcareController controller) {
         this.controller = controller;
@@ -22,7 +23,8 @@ public class StaffPanel extends JPanel {
     private void initializePanel() {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        String[] columns = {"Staff ID", "First Name", "Last Name", "Role", "Facility ID", "Email", "Phone"};
+        String[] columns = {"Staff ID", "First Name", "Last Name", "Role", "Department", "Facility ID", 
+                          "Email", "Phone", "Employment Status", "Start Date", "Line Manager", "Access Level"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -63,9 +65,14 @@ public class StaffPanel extends JPanel {
         addField(panel, gbc, row++, "First Name:", firstNameField = new JTextField(15));
         addField(panel, gbc, row++, "Last Name:", lastNameField = new JTextField(15));
         addField(panel, gbc, row++, "Role:", roleField = new JTextField(15));
+        addField(panel, gbc, row++, "Department:", departmentField = new JTextField(15));
         addField(panel, gbc, row++, "Facility ID:", facilityIDField = new JTextField(15));
         addField(panel, gbc, row++, "Email:", emailField = new JTextField(15));
         addField(panel, gbc, row++, "Phone:", phoneField = new JTextField(15));
+        addField(panel, gbc, row++, "Employment Status:", employmentStatusField = new JTextField(15));
+        addField(panel, gbc, row++, "Start Date:", startDateField = new JTextField(15));
+        addField(panel, gbc, row++, "Line Manager:", lineManagerField = new JTextField(15));
+        addField(panel, gbc, row++, "Access Level:", accessLevelField = new JTextField(15));
 
         return panel;
     }
@@ -146,8 +153,10 @@ public class StaffPanel extends JPanel {
             return null;
         }
         return new Staff(staffIDField.getText().trim(), firstNameField.getText().trim(),
-            lastNameField.getText().trim(), roleField.getText().trim(),
-            facilityIDField.getText().trim(), emailField.getText().trim(), phoneField.getText().trim());
+            lastNameField.getText().trim(), roleField.getText().trim(), departmentField.getText().trim(),
+            facilityIDField.getText().trim(), emailField.getText().trim(), phoneField.getText().trim(),
+            employmentStatusField.getText().trim(), startDateField.getText().trim(),
+            lineManagerField.getText().trim(), accessLevelField.getText().trim());
     }
 
     private void loadSelectedStaff() {
@@ -157,9 +166,14 @@ public class StaffPanel extends JPanel {
             firstNameField.setText((String) tableModel.getValueAt(row, 1));
             lastNameField.setText((String) tableModel.getValueAt(row, 2));
             roleField.setText((String) tableModel.getValueAt(row, 3));
-            facilityIDField.setText((String) tableModel.getValueAt(row, 4));
-            emailField.setText((String) tableModel.getValueAt(row, 5));
-            phoneField.setText((String) tableModel.getValueAt(row, 6));
+            departmentField.setText((String) tableModel.getValueAt(row, 4));
+            facilityIDField.setText((String) tableModel.getValueAt(row, 5));
+            emailField.setText((String) tableModel.getValueAt(row, 6));
+            phoneField.setText((String) tableModel.getValueAt(row, 7));
+            employmentStatusField.setText((String) tableModel.getValueAt(row, 8));
+            startDateField.setText((String) tableModel.getValueAt(row, 9));
+            lineManagerField.setText((String) tableModel.getValueAt(row, 10));
+            accessLevelField.setText((String) tableModel.getValueAt(row, 11));
         }
     }
 
@@ -168,16 +182,22 @@ public class StaffPanel extends JPanel {
         firstNameField.setText("");
         lastNameField.setText("");
         roleField.setText("");
+        departmentField.setText("");
         facilityIDField.setText("");
         emailField.setText("");
         phoneField.setText("");
+        employmentStatusField.setText("");
+        startDateField.setText("");
+        lineManagerField.setText("");
+        accessLevelField.setText("");
     }
 
     public void refreshData() {
         tableModel.setRowCount(0);
         for (Staff s : controller.getAllStaff()) {
             tableModel.addRow(new Object[]{s.getStaffID(), s.getFirstName(), s.getLastName(),
-                s.getRole(), s.getFacilityID(), s.getEmail(), s.getPhone()});
+                s.getRole(), s.getDepartment(), s.getFacilityID(), s.getEmail(), s.getPhone(),
+                s.getEmploymentStatus(), s.getStartDate(), s.getLineManager(), s.getAccessLevel()});
         }
     }
 }

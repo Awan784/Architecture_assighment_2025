@@ -11,9 +11,9 @@ public class PrescriptionPanel extends JPanel {
     private HealthcareController controller;
     private JTable table;
     private DefaultTableModel tableModel;
-    private JTextField prescriptionIDField, patientIDField, clinicianIDField, medicationField;
-    private JTextField dosageField, quantityField, pharmacyField, datePrescribedField;
-    private JTextField collectionStatusField, notesField;
+    private JTextField prescriptionIDField, patientIDField, clinicianIDField, appointmentIDField, medicationField;
+    private JTextField dosageField, frequencyField, durationDaysField, quantityField, pharmacyField;
+    private JTextField datePrescribedField, issueDateField, collectionDateField, collectionStatusField, notesField;
 
     public PrescriptionPanel(HealthcareController controller) {
         this.controller = controller;
@@ -23,8 +23,9 @@ public class PrescriptionPanel extends JPanel {
     private void initializePanel() {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        String[] columns = {"Prescription ID", "Patient ID", "Clinician ID", "Medication", 
-                          "Dosage", "Quantity", "Pharmacy", "Date Prescribed", "Collection Status", "Notes"};
+        String[] columns = {"Prescription ID", "Patient ID", "Clinician ID", "Appointment ID", "Medication", 
+                          "Dosage", "Frequency", "Duration Days", "Quantity", "Pharmacy", "Date Prescribed", 
+                          "Issue Date", "Collection Date", "Collection Status", "Notes"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -64,11 +65,16 @@ public class PrescriptionPanel extends JPanel {
         addField(panel, gbc, row++, "Prescription ID:", prescriptionIDField = new JTextField(15));
         addField(panel, gbc, row++, "Patient ID:", patientIDField = new JTextField(15));
         addField(panel, gbc, row++, "Clinician ID:", clinicianIDField = new JTextField(15));
+        addField(panel, gbc, row++, "Appointment ID:", appointmentIDField = new JTextField(15));
         addField(panel, gbc, row++, "Medication:", medicationField = new JTextField(15));
         addField(panel, gbc, row++, "Dosage:", dosageField = new JTextField(15));
+        addField(panel, gbc, row++, "Frequency:", frequencyField = new JTextField(15));
+        addField(panel, gbc, row++, "Duration Days:", durationDaysField = new JTextField(15));
         addField(panel, gbc, row++, "Quantity:", quantityField = new JTextField(15));
         addField(panel, gbc, row++, "Pharmacy:", pharmacyField = new JTextField(15));
         addField(panel, gbc, row++, "Date Prescribed:", datePrescribedField = new JTextField(15));
+        addField(panel, gbc, row++, "Issue Date:", issueDateField = new JTextField(15));
+        addField(panel, gbc, row++, "Collection Date:", collectionDateField = new JTextField(15));
         addField(panel, gbc, row++, "Collection Status:", collectionStatusField = new JTextField(15));
         addField(panel, gbc, row++, "Notes:", notesField = new JTextField(15));
 
@@ -151,10 +157,11 @@ public class PrescriptionPanel extends JPanel {
             return null;
         }
         return new Prescription(prescriptionIDField.getText().trim(), patientIDField.getText().trim(),
-            clinicianIDField.getText().trim(), medicationField.getText().trim(),
-            dosageField.getText().trim(), quantityField.getText().trim(), pharmacyField.getText().trim(),
-            datePrescribedField.getText().trim(), collectionStatusField.getText().trim(),
-            notesField.getText().trim());
+            clinicianIDField.getText().trim(), appointmentIDField.getText().trim(),
+            medicationField.getText().trim(), dosageField.getText().trim(), frequencyField.getText().trim(),
+            durationDaysField.getText().trim(), quantityField.getText().trim(), pharmacyField.getText().trim(),
+            datePrescribedField.getText().trim(), issueDateField.getText().trim(), collectionDateField.getText().trim(),
+            collectionStatusField.getText().trim(), notesField.getText().trim());
     }
 
     private void loadSelectedPrescription() {
@@ -163,13 +170,18 @@ public class PrescriptionPanel extends JPanel {
             prescriptionIDField.setText((String) tableModel.getValueAt(row, 0));
             patientIDField.setText((String) tableModel.getValueAt(row, 1));
             clinicianIDField.setText((String) tableModel.getValueAt(row, 2));
-            medicationField.setText((String) tableModel.getValueAt(row, 3));
-            dosageField.setText((String) tableModel.getValueAt(row, 4));
-            quantityField.setText((String) tableModel.getValueAt(row, 5));
-            pharmacyField.setText((String) tableModel.getValueAt(row, 6));
-            datePrescribedField.setText((String) tableModel.getValueAt(row, 7));
-            collectionStatusField.setText((String) tableModel.getValueAt(row, 8));
-            notesField.setText((String) tableModel.getValueAt(row, 9));
+            appointmentIDField.setText((String) tableModel.getValueAt(row, 3));
+            medicationField.setText((String) tableModel.getValueAt(row, 4));
+            dosageField.setText((String) tableModel.getValueAt(row, 5));
+            frequencyField.setText((String) tableModel.getValueAt(row, 6));
+            durationDaysField.setText((String) tableModel.getValueAt(row, 7));
+            quantityField.setText((String) tableModel.getValueAt(row, 8));
+            pharmacyField.setText((String) tableModel.getValueAt(row, 9));
+            datePrescribedField.setText((String) tableModel.getValueAt(row, 10));
+            issueDateField.setText((String) tableModel.getValueAt(row, 11));
+            collectionDateField.setText((String) tableModel.getValueAt(row, 12));
+            collectionStatusField.setText((String) tableModel.getValueAt(row, 13));
+            notesField.setText((String) tableModel.getValueAt(row, 14));
         }
     }
 
@@ -177,11 +189,16 @@ public class PrescriptionPanel extends JPanel {
         prescriptionIDField.setText("");
         patientIDField.setText("");
         clinicianIDField.setText("");
+        appointmentIDField.setText("");
         medicationField.setText("");
         dosageField.setText("");
+        frequencyField.setText("");
+        durationDaysField.setText("");
         quantityField.setText("");
         pharmacyField.setText("");
         datePrescribedField.setText("");
+        issueDateField.setText("");
+        collectionDateField.setText("");
         collectionStatusField.setText("");
         notesField.setText("");
     }
@@ -190,8 +207,9 @@ public class PrescriptionPanel extends JPanel {
         tableModel.setRowCount(0);
         for (Prescription p : controller.getAllPrescriptions()) {
             tableModel.addRow(new Object[]{p.getPrescriptionID(), p.getPatientID(), p.getClinicianID(),
-                p.getMedication(), p.getDosage(), p.getQuantity(), p.getPharmacy(),
-                p.getDatePrescribed(), p.getCollectionStatus(), p.getNotes()});
+                p.getAppointmentID(), p.getMedication(), p.getDosage(), p.getFrequency(), p.getDurationDays(),
+                p.getQuantity(), p.getPharmacy(), p.getDatePrescribed(), p.getIssueDate(), p.getCollectionDate(),
+                p.getCollectionStatus(), p.getNotes()});
         }
     }
 }

@@ -11,7 +11,8 @@ public class ClinicianPanel extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
     private JTextField clinicianIDField, firstNameField, lastNameField, qualificationField;
-    private JTextField specialtyField, workplaceField, emailField, phoneField;
+    private JTextField specialtyField, gmcNumberField, workplaceField, workplaceTypeField;
+    private JTextField employmentStatusField, startDateField, emailField, phoneField;
 
     public ClinicianPanel(HealthcareController controller) {
         this.controller = controller;
@@ -22,7 +23,7 @@ public class ClinicianPanel extends JPanel {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         String[] columns = {"Clinician ID", "First Name", "Last Name", "Qualification", 
-                          "Specialty", "Workplace", "Email", "Phone"};
+                          "Specialty", "GMC Number", "Workplace", "Workplace Type", "Employment Status", "Start Date", "Email", "Phone"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -64,7 +65,11 @@ public class ClinicianPanel extends JPanel {
         addField(panel, gbc, row++, "Last Name:", lastNameField = new JTextField(15));
         addField(panel, gbc, row++, "Qualification:", qualificationField = new JTextField(15));
         addField(panel, gbc, row++, "Specialty:", specialtyField = new JTextField(15));
+        addField(panel, gbc, row++, "GMC Number:", gmcNumberField = new JTextField(15));
         addField(panel, gbc, row++, "Workplace:", workplaceField = new JTextField(15));
+        addField(panel, gbc, row++, "Workplace Type:", workplaceTypeField = new JTextField(15));
+        addField(panel, gbc, row++, "Employment Status:", employmentStatusField = new JTextField(15));
+        addField(panel, gbc, row++, "Start Date:", startDateField = new JTextField(15));
         addField(panel, gbc, row++, "Email:", emailField = new JTextField(15));
         addField(panel, gbc, row++, "Phone:", phoneField = new JTextField(15));
 
@@ -148,7 +153,9 @@ public class ClinicianPanel extends JPanel {
         }
         return new Clinician(clinicianIDField.getText().trim(), firstNameField.getText().trim(),
             lastNameField.getText().trim(), qualificationField.getText().trim(),
-            specialtyField.getText().trim(), workplaceField.getText().trim(),
+            specialtyField.getText().trim(), gmcNumberField.getText().trim(),
+            workplaceField.getText().trim(), workplaceTypeField.getText().trim(),
+            employmentStatusField.getText().trim(), startDateField.getText().trim(),
             emailField.getText().trim(), phoneField.getText().trim());
     }
 
@@ -160,9 +167,13 @@ public class ClinicianPanel extends JPanel {
             lastNameField.setText((String) tableModel.getValueAt(row, 2));
             qualificationField.setText((String) tableModel.getValueAt(row, 3));
             specialtyField.setText((String) tableModel.getValueAt(row, 4));
-            workplaceField.setText((String) tableModel.getValueAt(row, 5));
-            emailField.setText((String) tableModel.getValueAt(row, 6));
-            phoneField.setText((String) tableModel.getValueAt(row, 7));
+            gmcNumberField.setText((String) tableModel.getValueAt(row, 5));
+            workplaceField.setText((String) tableModel.getValueAt(row, 6));
+            workplaceTypeField.setText((String) tableModel.getValueAt(row, 7));
+            employmentStatusField.setText((String) tableModel.getValueAt(row, 8));
+            startDateField.setText((String) tableModel.getValueAt(row, 9));
+            emailField.setText((String) tableModel.getValueAt(row, 10));
+            phoneField.setText((String) tableModel.getValueAt(row, 11));
         }
     }
 
@@ -172,7 +183,11 @@ public class ClinicianPanel extends JPanel {
         lastNameField.setText("");
         qualificationField.setText("");
         specialtyField.setText("");
+        gmcNumberField.setText("");
         workplaceField.setText("");
+        workplaceTypeField.setText("");
+        employmentStatusField.setText("");
+        startDateField.setText("");
         emailField.setText("");
         phoneField.setText("");
     }
@@ -181,7 +196,8 @@ public class ClinicianPanel extends JPanel {
         tableModel.setRowCount(0);
         for (Clinician c : controller.getAllClinicians()) {
             tableModel.addRow(new Object[]{c.getClinicianID(), c.getFirstName(), c.getLastName(),
-                c.getQualification(), c.getSpecialty(), c.getWorkplace(), c.getEmail(), c.getPhone()});
+                c.getQualification(), c.getSpecialty(), c.getGmcNumber(), c.getWorkplace(), c.getWorkplaceType(),
+                c.getEmploymentStatus(), c.getStartDate(), c.getEmail(), c.getPhone()});
         }
     }
 }

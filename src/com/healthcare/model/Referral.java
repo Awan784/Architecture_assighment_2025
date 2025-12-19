@@ -12,8 +12,14 @@ public class Referral {
     private String receivingFacility;
     private String date;
     private String urgency;
+    private String referralReason;
     private String clinicalSummary;
+    private String requestedInvestigations;
+    private String appointmentID;
+    private String notes;
     private String status;
+    private String createdDate;
+    private String lastUpdated;
 
     public Referral() {
     }
@@ -21,6 +27,15 @@ public class Referral {
     public Referral(String referralID, String patientID, String referringClinicianID,
                     String receivingClinicianID, String referringFacility, String receivingFacility,
                     String date, String urgency, String clinicalSummary, String status) {
+        this(referralID, patientID, referringClinicianID, receivingClinicianID, referringFacility, receivingFacility,
+             date, urgency, "", clinicalSummary, "", "", "", status, "", "");
+    }
+
+    public Referral(String referralID, String patientID, String referringClinicianID,
+                    String receivingClinicianID, String referringFacility, String receivingFacility,
+                    String date, String urgency, String referralReason, String clinicalSummary,
+                    String requestedInvestigations, String appointmentID, String notes, String status,
+                    String createdDate, String lastUpdated) {
         this.referralID = referralID;
         this.patientID = patientID;
         this.referringClinicianID = referringClinicianID;
@@ -29,8 +44,14 @@ public class Referral {
         this.receivingFacility = receivingFacility;
         this.date = date;
         this.urgency = urgency;
+        this.referralReason = referralReason;
         this.clinicalSummary = clinicalSummary;
+        this.requestedInvestigations = requestedInvestigations;
+        this.appointmentID = appointmentID;
+        this.notes = notes;
         this.status = status;
+        this.createdDate = createdDate;
+        this.lastUpdated = lastUpdated;
     }
 
     // Getters and Setters
@@ -112,6 +133,54 @@ public class Referral {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getReferralReason() {
+        return referralReason;
+    }
+
+    public void setReferralReason(String referralReason) {
+        this.referralReason = referralReason;
+    }
+
+    public String getRequestedInvestigations() {
+        return requestedInvestigations;
+    }
+
+    public void setRequestedInvestigations(String requestedInvestigations) {
+        this.requestedInvestigations = requestedInvestigations;
+    }
+
+    public String getAppointmentID() {
+        return appointmentID;
+    }
+
+    public void setAppointmentID(String appointmentID) {
+        this.appointmentID = appointmentID;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     @Override

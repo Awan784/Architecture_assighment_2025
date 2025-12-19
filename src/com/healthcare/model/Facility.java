@@ -8,8 +8,11 @@ public class Facility {
     private String name;
     private String type;
     private String address;
+    private String postcode;
     private String phone;
     private String email;
+    private String openingHours;
+    private String managerName;
     private String services;
     private String capacity;
 
@@ -18,12 +21,21 @@ public class Facility {
 
     public Facility(String facilityID, String name, String type, String address,
                     String phone, String email, String services, String capacity) {
+        this(facilityID, name, type, address, "", phone, email, "", "", services, capacity);
+    }
+
+    public Facility(String facilityID, String name, String type, String address, String postcode,
+                    String phone, String email, String openingHours, String managerName,
+                    String services, String capacity) {
         this.facilityID = facilityID;
         this.name = name;
         this.type = type;
         this.address = address;
+        this.postcode = postcode;
         this.phone = phone;
         this.email = email;
+        this.openingHours = openingHours;
+        this.managerName = managerName;
         this.services = services;
         this.capacity = capacity;
     }
@@ -91,6 +103,30 @@ public class Facility {
 
     public void setCapacity(String capacity) {
         this.capacity = capacity;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getOpeningHours() {
+        return openingHours;
+    }
+
+    public void setOpeningHours(String openingHours) {
+        this.openingHours = openingHours;
+    }
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
     }
 
     @Override
